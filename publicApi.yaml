@@ -1,0 +1,871 @@
+openapi: 3.0.0
+info:
+  title: Dataset Public API
+  version: '1.0'
+  description: ''
+servers:
+  - url: https://app.scalyr.com
+    description: Dataset (US)
+paths:
+  /api/uploadLogs:
+    post:
+      summary: uploadLogs
+      operationId: post-uploadLogs
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/uploadLogText'
+            example: Some test log Some test log Some test log Some test log
+      responses:
+        '200':
+          description: Logs uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+        '400':
+          description: A failed request
+  /api/putFile:
+    post:
+      operationId: post-deleteFile
+      summary: deleteFile
+      description: delete a file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deleteFile'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+        '400':
+          description: A failed request
+  /api/getFile:
+    post:
+      operationId: post-getFile
+      summary: getFile with exist path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getFile'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getFileResponse'
+        '404':
+          description: File with path not found
+  /api/powerQuery:
+    post:
+      operationId: post-powerQuery
+      summary: powerQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/powerQueryRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/powerQueryResponse'
+  /api/facetQuery:
+    post:
+      operationId: post-facetQuery
+      summary: FacetQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/facetQueryRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/facetQueryResponse'
+  /api/addEvents:
+    post:
+      operationId: post-addEvent
+      summary: addEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addEventsRequest'
+            example:
+              session: 0834a76b-b1ed-4a6e-9d6b-a465ec47783a
+              sessionInfo:
+                serverHost: monitor
+                serverType: Automatic Tests
+                region: us-east-1
+              events:
+                - thread: '1'
+                  sev: 3
+                  ts: 1655387632462000000
+                  attrs:
+                    parser: monitorParser
+                    message: Ingest event for automatic test for sessionId=0834a76b-b1ed-4a6e-9d6b-a465ec47783a, user=automationTests, environment=Scalyr qatesting e2e-test-user2
+                    latency: 10
+                    env: Scalyr qatesting e2e-test-user2
+              threads:
+                - id: 1
+                  name: Ingest API Test Event
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addEventsResponse'
+  /api/inviteUser:
+    post:
+      operationId: post-inviteUser
+      summary: inviteUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inviteUserRequest'
+            example:
+              emailAddress: e2e-test-user-user@scalyr.com
+              permission: user
+              allowedSearch: ''
+              allowedDashboards: []
+              groups: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/editUserPermissions:
+    post:
+      operationId: post-editUserPermissions
+      summary: editUserPermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editUserPermission'
+            example:
+              emailAddress: e2e-test-user-user@scalyr.com
+              permission: user
+              allowedSearch: ''
+              allowedDashboards: []
+              groups: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/listUsers:
+    post:
+      operationId: post-listUsers
+      summary: listUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listUsersResponse'
+  /api/addGroup:
+    post:
+      operationId: addGroup
+      summary: addGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addGroupRequest'
+            example:
+              name: test-user-group
+              permission: user
+              allowedSearch: ''
+              allowedDashboards: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/editGroupPermissions:
+    post:
+      operationId: post-editGroupPermissions
+      summary: editGroupPermissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addGroupRequest'
+            example:
+              name: test-user-group
+              permission: user
+              allowedSearch: ''
+              allowedDashboards: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/listGroups:
+    post:
+      operationId: post-listGroups
+      summary: listGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            example: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listGroupsResponse'
+  /api/addUsersToGroup:
+    post:
+      operationId: post-addUsersToGroup
+      summary: addUsersToGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addUserToGroupRequest'
+            example:
+              groupName: test-user-group
+              userEmails:
+                - e2e-test-user-user@scalyr.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addUserToGroupResponse'
+  /api/listUsersInGroup:
+    post:
+      operationId: post-listUsersInGroup
+      summary: listUsersInGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listUsersInGroupRequest'
+            example:
+              groupName: test-user-group
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listUsersInGroupResponse'
+  /api/removeUsersFromGroup:
+    post:
+      operationId: post-removeUsersFromGroup
+      summary: removeUsersFromGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/removeUsersFromGroupRequest'
+            example:
+              groupName: test-user-group
+              userEmails:
+                - e2e-test-user-user@scalyr.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/removeGroup:
+    post:
+      operationId: post-removeGroup
+      summary: removeGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/removeGroupRequest'
+            example:
+              name: test-user-group
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/revokeAccess:
+    post:
+      operationId: post-revokeAccess
+      summary: revokeAccess
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/revokeAccessRequest'
+            example:
+              emailAddress: e2e-test-user-user@scalyr.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusSuccess'
+  /api/query:
+    post:
+      operationId: post-getQuery
+      summary: getQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getQueryLogRequest'
+            example:
+              queryType: log
+              maxCount: '200'
+              pageMode: tail
+              startTime: 24 hour
+              endTime: ''
+              priority: high
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/numericQuery:
+    post:
+      operationId: post-numericQuery
+      summary: numericQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/numericQueryRequest'
+            example:
+              queryType: numeric
+              function: count
+              startTime: 24 hour
+              endTime: ''
+              buckets: '523'
+              priority: high
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/numericQueryResponse'
+  /api/timeseriesQuery:
+    post:
+      operationId: post-timeseriesQuery
+      summary: timeseriesQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/timeseriesQueryRequest'
+            example:
+              queries:
+                - filter: status >= 400 status < 500
+                  startTime: 24 hour
+                  buckets: '1211'
+                  priority: high
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/timeseriesQueryResponse'
+components:
+  schemas:
+    uploadLogText:
+      type: string
+      description: The request body should consist of one or more log messages, separated by line breaks (\n, \r, or \r\n). A line break after the last message is optional.
+    statusSuccess:
+      type: object
+      description: A successful request will return a response with the following body
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    deleteFile:
+      type: object
+      properties:
+        path:
+          type: string
+          example: /test
+        deleteFile:
+          type: boolean
+          example: true
+        expectedVersion:
+          type: number
+      required:
+        - path
+        - deleteFile
+    getFile:
+      type: object
+      properties:
+        path:
+          type: string
+          example: /test
+        expectedVersion:
+          type: number
+        prettyprint:
+          type: boolean
+      required:
+        - path
+    getFileResponse:
+      type: object
+      properties:
+        path:
+          type: string
+        modDate:
+          type: number
+        stalenessSlop:
+          type: number
+        version:
+          type: number
+        content:
+          type: string
+        status:
+          type: string
+        createDate:
+          type: number
+    powerQueryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          example: test
+        maxCount:
+          type: number
+        startTime:
+          type: string
+          example: 24 hour
+        endTime:
+          type: string
+        priority:
+          type: string
+      required:
+        - query
+        - startTime
+        - maxCount
+    powerQueryResponse:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+        warnings:
+          type: array
+          items:
+            type: string
+        values:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+        matchingEvents:
+          type: number
+        status:
+          type: string
+        omittedEvents:
+          type: number
+    facetQueryRequest:
+      type: object
+      properties:
+        queryType:
+          type: string
+          example: facet
+          enum:
+            - facet
+        field:
+          type: string
+          example: uriPath
+        maxCount:
+          type: number
+          example: 200
+          minimum: 1
+          maximum: 1000
+        startTime:
+          type: string
+          example: 72 hour
+      required:
+        - queryType
+        - field
+        - maxCount
+        - startTime
+    facetQueryResponse:
+      type: object
+      properties:
+        executionTime:
+          type: number
+        cpuUsage:
+          type: number
+        values:
+          type: array
+          items:
+            type: object
+            properties:
+              count:
+                type: number
+              value:
+                type: string
+        matchCount:
+          type: number
+        status:
+          type: string
+    addEventsRequest:
+      type: object
+      properties:
+        session:
+          type: string
+        sessionInfo:
+          type: object
+          properties:
+            serverHost:
+              type: string
+            serverType:
+              type: string
+            region:
+              type: string
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              thread:
+                type: string
+              sev:
+                type: number
+              ts:
+                type: number
+              attrs:
+                type: object
+                properties:
+                  parser:
+                    type: string
+                  message:
+                    type: string
+                  latency:
+                    type: number
+                  env:
+                    type: string
+        threads:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              name:
+                type: string
+      required:
+        - session
+        - sessionInfo
+        - events
+        - threads
+    addEventsResponse:
+      type: object
+      properties:
+        bytesCharged:
+          type: number
+        status:
+          type: string
+    inviteUserRequest:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+        permission:
+          type: string
+        allowedSearch:
+          type: string
+        allowedDashboards:
+          type: array
+          items:
+            type: object
+        groups:
+          type: array
+          items:
+            type: object
+      required:
+        - emailAddress
+        - permission
+        - allowedDashboards
+        - allowedSearch
+        - groups
+    editUserPermission:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+        permission:
+          type: string
+          enum:
+            - user
+        allowedSearch:
+          type: string
+        allowedDashboards:
+          type: array
+          items:
+            type: object
+        groups:
+          type: array
+          items:
+            type: object
+      required:
+        - emailAddress
+        - permission
+        - allowedDashboards
+        - allowedSearch
+        - groups
+    listUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              permissions:
+                type: string
+              allowedDashboards:
+                type: array
+                items:
+                  type: object
+              email:
+                type: string
+        status:
+          type: string
+    addGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        permission:
+          type: string
+        allowedSearch:
+          type: string
+        allowedDashboards:
+          type: array
+          items:
+            type: object
+      required:
+        - name
+        - permission
+        - allowedSearch
+        - allowedDashboards
+    listGroupsResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              permissions:
+                type: string
+              name:
+                type: string
+        status:
+          type: string
+    addUserToGroupRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+        userEmails:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - userEmails
+    addUserToGroupResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        updatedUsers:
+          type: array
+          items:
+            type: object
+    listUsersInGroupRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+      required:
+        - groupName
+    listUsersInGroupResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+        status:
+          type: string
+    removeUsersFromGroupRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+        userEmails:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - userEmails
+    removeGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    revokeAccessRequest:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+      required:
+        - emailAddress
+    getQueryLogRequest:
+      type: object
+      properties:
+        queryType:
+          type: string
+          enum:
+            - log
+        maxCount:
+          type: number
+          minimum: 1
+          maximum: 100
+        pageMode:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        priority:
+          type: string
+      required:
+        - queryType
+        - maxCount
+    numericQueryRequest:
+      type: object
+      properties:
+        queryType:
+          type: string
+          enum:
+            - numeric
+        function:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        buckets:
+          type: number
+          minimum: 1
+          maximum: 5000
+        priority:
+          type: string
+      required:
+        - queryType
+        - startTime
+    numericQueryResponse:
+      type: object
+      properties:
+        executionTime:
+          type: number
+        cpuUsage:
+          type: number
+        values:
+          type: array
+          items:
+            type: number
+        status:
+          type: string
+    timeseriesQueryRequest:
+      type: object
+      properties:
+        queries:
+          type: array
+          items:
+            type: object
+            properties:
+              filter:
+                type: string
+              startTime:
+                type: string
+              buckets:
+                type: number
+                minimum: 1
+                maximum: 5000
+              priority:
+                type: string
+      required:
+        - queries
+    timeseriesQueryResponse:
+      type: object
+      properties:
+        executionTime:
+          type: number
+        cpuUsage:
+          type: number
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              executionTime:
+                type: number
+              values:
+                type: array
+                items:
+                  type: number
+        status:
+          type: string
